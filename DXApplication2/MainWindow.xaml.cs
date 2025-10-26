@@ -25,8 +25,15 @@ namespace DXApplication2
         public MainWindow()
         {
             InitializeComponent();
-            ObjectDataSource objectSource = new() { DataSource = CreateData() };
-            viewer.DocumentSource = new XtraReportInstance() { DataSource = objectSource };
+            // Wrap the list into a root object so the report can bind to General.Data
+            // Create a General model instance with Serial and SampleName
+            var general = new General("SN-0001", "Sample A", CreateData());
+            var root = new { General = general };
+            ObjectDataSource objectSource = new() { DataSource = root };
+            var report = new XtraReportInstance() { DataSource = objectSource };
+            // Bind the Detail band to the collection at General.Data
+            report.DataMember = "General.Data";
+            viewer.DocumentSource = report;
         }
         public List<Dimensions> CreateData()
         {
@@ -44,12 +51,15 @@ namespace DXApplication2
                 dimensionsList.Add(new Dimensions(d.length, d.width, d.height, d.depth));
             }
 
-            // Gán dữ liệu cho report
-            ObjectDataSource objectSource = new() { DataSource = dimensionsList };
+            // Gán dữ liệu cho report — bọc vào root.General.Data và set DataMember
+            var general = new DXApplication2.Model.General("SN-0001", "Sample A", dimensionsList);
+            ObjectDataSource objectSource = new() { DataSource = new { General = general } };
             var report = new XtraReportInstance()
             {
                 DataSource = objectSource
             };
+            // Important: bind the detail band to the collection path
+            report.DataMember = "General.Data";
 
             // TODO: bind img vào report nếu cần, ví dụ XRPictureBox
             // report.PictureBox.ImageSource = img;
