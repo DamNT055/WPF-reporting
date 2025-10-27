@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.Xpf.Core;
 using DXApplication2.Model;
+using DXApplication2.Helper;
 
 namespace DXApplication2
 {
@@ -52,19 +53,7 @@ namespace DXApplication2
 
         public void ShowReport(string serial, string sampleName, Image img, DateTime date, (double length, double width, double height)[] dimensionsArray)
         {
-            var dimensionsList = (dimensionsArray ?? Array.Empty<(double length, double width, double height)>()).Select(d => new Dimensions(d.length, d.width, d.height))
-                        .ToList();
-
-            var safeImage = img ?? new Bitmap(1, 1);
-            var general = new General(serial, sampleName, dimensionsList, date, safeImage);
-            var root = new { General = general };
-
-            ObjectDataSource objectSource = new() { DataSource = root };
-            var report = new XtraReportInstance()
-            {
-                DataSource = objectSource,
-                DataMember = "General.Data"
-            };
+            var report = ReportService.CreateReport(serial, sampleName, img, date, dimensionsArray);
             viewer.DocumentSource = report;
         }
     }
