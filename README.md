@@ -41,3 +41,12 @@ If you need support or have questions about SAM/Ohlab integration, contact the d
 ---
 
 _Version note._ This is a short README translation into English; if you want, I can add more detailed instructions (SAM configuration, sample data, or packaging instructions).
+
+Screenshot
+----------
+
+Below is a preview screenshot of the generated scan report. Add the actual image file to `Screenshot.png` in the repository to make it display on GitHub.
+
+![Scan report preview](Screenshot.png)
+
+If the image doesn't appear, place the PNG at `images/scan_report_preview.png` (create the `images/` folder if it does not exist) or open this repository in an environment that has the image stored locally.

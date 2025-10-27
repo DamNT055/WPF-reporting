@@ -42,7 +42,11 @@ namespace DXApplication2
         {
             InitializeComponent();
             var img = LoadImage();
-            var defaultDims = new (double length, double width, double height)[] { (10.0, 5.0, 2.0) };
+            var defaultDims = new (double length, double width, double height)[] 
+            { 
+                (10.0, 5.0, 2.0),
+                (15.0, 7.5, 3.0)
+            };
             this.ShowReport("SN-0001", "Sample A", img, DateTime.Now, defaultDims);
         }
 
