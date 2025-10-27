@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,48 +23,44 @@ namespace DXApplication2
     /// </summary>
     public partial class MainWindow : ThemedWindow
     {
+        public static Image LoadImage()
+        {
+            string path = System.IO.Path.Combine(@"D:\Dev-TD\WPF-reporting\DXApplication2", "SecondSample_25MHz.Tiff");
+            try
+            {
+                using var fs = File.OpenRead(path);
+                using var src = Image.FromStream(fs);
+                return new Bitmap(src);
+            }
+            catch
+            {
+                return new Bitmap(1, 1);
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
-            // Wrap the list into a root object so the report can bind to General.Data
-            // Create a General model instance with Serial and SampleName
-            var general = new General("SN-0001", "Sample A", CreateData());
-            var root = new { General = general };
-            ObjectDataSource objectSource = new() { DataSource = root };
-            var report = new XtraReportInstance() { DataSource = objectSource };
-            // Bind the Detail band to the collection at General.Data
-            report.DataMember = "General.Data";
-            viewer.DocumentSource = report;
+            var img = LoadImage();
+            var defaultDims = new (double length, double width, double height)[] { (10.0, 5.0, 2.0) };
+            this.ShowReport("SN-0001", "Sample A", img, DateTime.Now, defaultDims);
         }
-        public List<Dimensions> CreateData()
-        {
-            // Sample dimensions data — replace or extend with real values as needed.
-            return new List<Dimensions>() {
-                new Dimensions(10.0, 5.0, 2.5, 0.5),
-                new Dimensions(1, 2, 2.5, 0.5),
-            };
-        }
-        public void ShowReport(ImageSource img, (double length, double width, double height, double depth)[] dimensionsArray)
-        {
-            List<Dimensions> dimensionsList = new List<Dimensions>();
-            foreach (var d in dimensionsArray)
-            {
-                dimensionsList.Add(new Dimensions(d.length, d.width, d.height, d.depth));
-            }
 
-            // Gán dữ liệu cho report — bọc vào root.General.Data và set DataMember
-            var general = new DXApplication2.Model.General("SN-0001", "Sample A", dimensionsList);
-            ObjectDataSource objectSource = new() { DataSource = new { General = general } };
+        public void ShowReport(string serial, string sampleName, Image img, DateTime date, (double length, double width, double height)[] dimensionsArray)
+        {
+            var dimensionsList = (dimensionsArray ?? Array.Empty<(double length, double width, double height)>()).Select(d => new Dimensions(d.length, d.width, d.height))
+                        .ToList();
+
+            var safeImage = img ?? new Bitmap(1, 1);
+            var general = new General(serial, sampleName, dimensionsList, date, safeImage);
+            var root = new { General = general };
+
+            ObjectDataSource objectSource = new() { DataSource = root };
             var report = new XtraReportInstance()
             {
-                DataSource = objectSource
+                DataSource = objectSource,
+                DataMember = "General.Data"
             };
-            // Important: bind the detail band to the collection path
-            report.DataMember = "General.Data";
-
-            // TODO: bind img vào report nếu cần, ví dụ XRPictureBox
-            // report.PictureBox.ImageSource = img;
-
             viewer.DocumentSource = report;
         }
     }

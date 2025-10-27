@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DevExpress.Wpf" Version="25.1.*"/>
+      <PackageReference Include="DevExpress.Wpf" Version="25.1.*" />
       <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="25.1.*" />
       <PackageReference Include="DevExpress.Reporting.Core" Version="25.1.*" />
       <PackageReference Include="DevExpress.RichEdit.Export" Version="25.1.*" />
