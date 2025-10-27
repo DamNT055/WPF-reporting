@@ -1,4 +1,4 @@
-# DXApplicationReporting
+# DXApplicationReporting Project
 
 Description
 -----------
