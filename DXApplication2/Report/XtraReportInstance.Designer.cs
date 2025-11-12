@@ -558,7 +558,7 @@
             this.xrTableCell17.Multiline = true;
             this.xrTableCell17.Name = "xrTableCell17";
             this.xrTableCell17.StylePriority.UseTextAlignment = false;
-            this.xrTableCell17.Text = "5) Batch No. : ";
+            this.xrTableCell17.Text = "5)  Batch No. : ";
             this.xrTableCell17.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrTableCell17.Weight = 2D;
             // 
