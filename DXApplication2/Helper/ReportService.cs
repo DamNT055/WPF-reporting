@@ -14,7 +14,7 @@ namespace DXApplication2.Helper
     /// </summary>
     public static class ReportService
     {
-        public static XtraReportInstance CreateReport(string serial, string sampleName, Image img, DateTime date, (double length, double width, double height)[] dimensionsArray)
+        public static XtraReportInstance CreateReport(string serial, string sampleName, Image img, DateTime? date, (double length, double width, double height)[] dimensionsArray)
         {
             var dimensionsList = (dimensionsArray ?? Array.Empty<(double length, double width, double height)>())
                 .Select(d => new Dimensions(d.length, d.width, d.height))

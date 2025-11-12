@@ -49,10 +49,10 @@ namespace DXApplication2
                 (15.0, 7.5, 3.0),
                 (20.0, 10.0, 4.0)
             };
-            this.ShowReport("SN-0001", "Sample A", img, DateTime.Now, defaultDims);
+            this.ShowReport("", "", img, null, defaultDims);
         }
 
-        public void ShowReport(string serial, string sampleName, Image img, DateTime date, (double length, double width, double height)[] dimensionsArray)
+        public void ShowReport(string serial, string sampleName, Image img, DateTime? date, (double length, double width, double height)[] dimensionsArray)
         {
             var report = ReportService.CreateReport(serial, sampleName, img, date, dimensionsArray);
             viewer.DocumentSource = report;
